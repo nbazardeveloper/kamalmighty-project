@@ -1,28 +1,66 @@
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { Suspense } from "react";
 import { MapPin } from "lucide-react";
-import { listProjectsPublic } from "@/lib/projects.functions";
 import { SectionHeading } from "./SectionHeading";
 import { Heading } from "./Heading";
 
-const projectsQuery = queryOptions({
-  queryKey: ["projects", "public"],
-  queryFn: () => listProjectsPublic(),
-});
+// Hardcoded placeholder set — the live Supabase-backed project gallery
+// (see src/lib/projects.functions.ts) needs SUPABASE_URL/SUPABASE_PUBLISHABLE_KEY
+// configured as Cloudflare Worker secrets before it can run. Until that's set
+// up, show a fixed set of representative projects using existing site photos
+// instead of an empty/broken grid.
+const PLACEHOLDER_PROJECTS = [
+  {
+    id: "1",
+    title: "Full Kitchen Remodel",
+    category: "Remodeling & Renovation",
+    description:
+      "Complete kitchen overhaul with custom cabinetry, quartz counters, and a redesigned layout for better flow.",
+    image_url: "/images/whykamalmighty.webp",
+    location: "Vancouver, WA",
+  },
+  {
+    id: "2",
+    title: "Primary Bathroom Renovation",
+    category: "Remodeling & Renovation",
+    description: "Modern tile work, walk-in shower conversion, and updated fixtures throughout.",
+    image_url: "/images/hero.webp",
+    location: "Camas, WA",
+  },
+  {
+    id: "3",
+    title: "Backyard Deck & Patio Build",
+    category: "Exterior & Outdoor Structures",
+    description: "New composite deck with built-in seating and a covered patio extension.",
+    image_url: "/images/howitworkshero.webp",
+    location: "Portland, OR",
+  },
+  {
+    id: "4",
+    title: "Whole-Home Electrical Upgrade",
+    category: "MEP Services (Plumbing & Electrical)",
+    description: "Panel replacement, rewiring, and new fixtures across a single-family home.",
+    image_url: "/images/services-hero.webp",
+    location: "Battle Ground, WA",
+  },
+  {
+    id: "5",
+    title: "Exterior Repairs & Siding",
+    category: "Handyman & General Repairs",
+    description: "Siding repair, fresh trim, and general exterior touch-ups before resale.",
+    image_url: "/images/form-hero.webp",
+    location: "Beaverton, OR",
+  },
+  {
+    id: "6",
+    title: "Basement Finishing",
+    category: "Remodeling & Renovation",
+    description: "Unfinished basement converted into a livable space with a full bathroom.",
+    image_url: "/images/hero-reviews2.webp",
+    location: "Ridgefield, WA",
+  },
+];
 
 function ProjectsGrid() {
-  const { data } = useSuspenseQuery(projectsQuery);
-  const projects = data.projects;
-
-  if (projects.length === 0) {
-    return (
-      <div className="rounded-xl border-2 border-dashed border-border bg-secondary p-12 text-center">
-        <p className="text-lg text-neutral-700">
-          Completed projects will appear here as we add them. Check back soon.
-        </p>
-      </div>
-    );
-  }
+  const projects = PLACEHOLDER_PROJECTS;
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -62,34 +100,12 @@ function ProjectsGrid() {
   );
 }
 
-function ProjectsSkeleton() {
-  return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className="animate-pulse overflow-hidden rounded-xl border border-border bg-card"
-        >
-          <div className="aspect-[4/3] bg-secondary" />
-          <div className="p-5 space-y-3">
-            <div className="h-3 w-24 rounded bg-secondary" />
-            <div className="h-5 w-3/4 rounded bg-secondary" />
-            <div className="h-3 w-1/2 rounded bg-secondary" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export function Projects() {
   return (
     <section id="projects" className="bg-background py-24">
       <div className="w-full px-4 sm:px-8 lg:px-16">
         <SectionHeading eyebrow="completed work." title="Recent Projects Across WA & OR" />
-        <Suspense fallback={<ProjectsSkeleton />}>
-          <ProjectsGrid />
-        </Suspense>
+        <ProjectsGrid />
       </div>
     </section>
   );
