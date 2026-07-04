@@ -174,7 +174,7 @@ export function Footer() {
                         setValues((v) => ({ ...v, project_description: val }))
                       }
                     >
-                      <SelectTrigger className={darkFieldClass}>
+                      <SelectTrigger className={darkFieldClass} aria-label="Project type">
                         <SelectValue placeholder="Select a service category" />
                       </SelectTrigger>
                       <SelectContent>
@@ -252,7 +252,7 @@ export function Footer() {
           <FooterColumn title="Company" links={COMPANY_LINKS} />
 
           <div>
-            <Heading as="h4" size="xs" tone="accent" tracking="widest">
+            <Heading as="h3" size="xs" tone="accent" tracking="widest">
               Service Area
             </Heading>
             <div className="mt-4 space-y-3 text-lg leading-relaxed text-neutral-200">
@@ -356,7 +356,7 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <Heading as="h4" size="xs" tone="accent" tracking="widest">
+      <Heading as="h3" size="xs" tone="accent" tracking="widest">
         {title}
       </Heading>
       <ul className="mt-4 space-y-3 text-lg text-neutral-200">

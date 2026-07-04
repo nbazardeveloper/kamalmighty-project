@@ -41,20 +41,16 @@ export function FAQ() {
           the image itself dissolves into the white section above instead
           of cutting off with a hard edge. Separate crop on mobile
           (faqmobile.webp) vs sm+ (faq.webp). */}
-      <img
-        src="/images/faqmobile.webp"
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-bottom [mask-image:linear-gradient(to_bottom,transparent_0%,black_45%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_45%)] sm:hidden"
-      />
-      <img
-        src="/images/faq.webp"
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover object-bottom [mask-image:linear-gradient(to_bottom,transparent_0%,black_45%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_45%)] sm:block"
-      />
+      <picture>
+        <source media="(min-width: 640px)" srcSet="/images/faq.webp" />
+        <img
+          src="/images/faqmobile.webp"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-bottom [mask-image:linear-gradient(to_bottom,transparent_0%,black_45%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_45%)]"
+        />
+      </picture>
 
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <SectionHeading eyebrow="faq." title="Frequently Asked Questions" />

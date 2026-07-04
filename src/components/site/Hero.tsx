@@ -12,20 +12,16 @@ const TRUST_ITEMS = [
 export function Hero() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden">
-      <img
-        src="/images/heromobile.webp"
-        alt="KAM Almighty Property Services headquarters building"
-        className="animate-hero-zoom absolute inset-0 h-full w-full object-cover sm:hidden"
-        loading="eager"
-        fetchPriority="high"
-      />
-      <img
-        src="/images/hero.webp"
-        alt="KAM Almighty Property Services headquarters building"
-        className="animate-hero-zoom absolute inset-0 hidden h-full w-full object-cover sm:block"
-        loading="eager"
-        fetchPriority="high"
-      />
+      <picture>
+        <source media="(min-width: 640px)" srcSet="/images/hero.webp" />
+        <img
+          src="/images/heromobile.webp"
+          alt="KAM Almighty Property Services headquarters building"
+          className="animate-hero-zoom absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+        />
+      </picture>
       <div className="absolute inset-0 bg-black/45" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/40 to-black/70" />
 
