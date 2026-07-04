@@ -221,6 +221,8 @@ function AdminPage() {
   );
 }
 
+const PROJECT_IMAGES_BUCKET = "project-images";
+
 function ProjectsAdmin() {
   const qc = useQueryClient();
   const listFn = useServerFn(listProjectsAdmin);
@@ -236,6 +238,36 @@ function ProjectsAdmin() {
     image_url: "",
     location: "",
   });
+  const [uploading, setUploading] = useState(false);
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const ext = file.name.includes(".") ? file.name.split(".").pop() : "jpg";
+      const path = `${crypto.randomUUID()}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from(PROJECT_IMAGES_BUCKET)
+        .upload(path, file, { cacheControl: "3600", upsert: false });
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage.from(PROJECT_IMAGES_BUCKET).getPublicUrl(path);
+      setForm((f) => ({ ...f, image_url: data.publicUrl }));
+      toast.success("Image uploaded");
+    } catch (err: any) {
+      toast.error(err?.message ?? "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const createMut = useMutation({
     mutationFn: () => createFn({ data: form }),
@@ -299,13 +331,22 @@ function ProjectsAdmin() {
               </SelectContent>
             </Select>
           </Field>
-          <Field label="Image URL">
-            <Input
-              value={form.image_url}
-              onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-              placeholder="https://..."
-              required
-            />
+          <Field label="Project Photo">
+            <div className="space-y-2">
+              {form.image_url && (
+                <img
+                  src={form.image_url}
+                  alt="Preview"
+                  className="h-32 w-full rounded-md border border-border object-cover"
+                />
+              )}
+              <Input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploading} />
+              {uploading && (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Loader2 className="h-3 w-3 animate-spin" /> Uploading…
+                </div>
+              )}
+            </div>
           </Field>
           <Field label="Location">
             <Input
@@ -322,7 +363,7 @@ function ProjectsAdmin() {
             />
           </Field>
           <button
-            disabled={createMut.isPending}
+            disabled={createMut.isPending || uploading || !form.image_url}
             className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-brand-yellow px-4 py-3 text-sm font-black uppercase tracking-wide text-brand-charcoal hover:brightness-95 disabled:opacity-70"
           >
             {createMut.isPending ? (

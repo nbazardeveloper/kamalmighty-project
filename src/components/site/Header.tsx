@@ -40,25 +40,66 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-30 border-y border-white/20 shadow-lg shadow-black/20">
-      <div className="flex w-full items-stretch">
-        {/* Logo badge — spans the full header height, flush left. Smaller
-            on mobile: at the h-16 size it used to eat close to half the
-            375px viewport, squeezing the email/nav column into a sliver. */}
-        <div className="flex flex-none items-center bg-black px-3 py-2 sm:px-8 sm:py-4 lg:py-5">
-          <Link to="/" className="flex items-center">
+      <div className="flex w-full flex-col items-stretch sm:flex-row">
+        {/* Logo badge — on mobile it's its own full-width centered row (per
+            client request: bigger, centered, stretched across the header),
+            with the menu toggle and call button overlaid directly on it
+            (left/right) instead of a separate row underneath — that extra
+            row was pushing total header height past the Hero's top padding
+            and causing the header to overlap the hero content. From sm up
+            it reverts to the original compact flush-left badge next to the
+            utility strip / nav column, where those two buttons live in the
+            nav row as before. */}
+        <div className="flex w-full items-center justify-between gap-3 bg-black px-4 py-3 sm:w-auto sm:flex-none sm:justify-start sm:gap-0 sm:px-8 sm:py-4 lg:py-5">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="flex h-10 w-10 flex-none items-center justify-center border border-white/30 text-white sm:hidden"
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+
+          <Link to="/" className="flex min-w-0 flex-1 items-center justify-center sm:flex-none sm:w-auto">
             <img
               src="/images/logo.webp"
               alt="KAM Almighty Property Services"
               width={872}
               height={368}
-              className="h-11 w-auto object-contain sm:h-20 lg:h-24"
+              className="h-auto max-h-28 w-full object-contain sm:h-20 sm:max-h-none sm:w-auto lg:h-24"
             />
           </Link>
+
+          {/* Mobile-only icon cluster — the utility strip (which used to
+              carry the email link) is hidden below sm now that the logo
+              row got taller, so email gets a compact icon here next to
+              the call button instead of disappearing entirely. */}
+          <div className="flex flex-none items-center gap-2 sm:hidden">
+            <a
+              href="mailto:help@kamalmighty.com"
+              aria-label="Email help@kamalmighty.com"
+              className="flex h-10 w-10 flex-none items-center justify-center border border-white/30 text-white"
+            >
+              <Mail className="h-5 w-5" />
+            </a>
+            <a
+              href="tel:+15648880755"
+              aria-label="Call (564) 888-0755"
+              className="flex h-10 w-10 flex-none items-center justify-center rounded-md bg-brand-yellow text-brand-charcoal shadow-md transition hover:brightness-95"
+            >
+              <Phone className="h-5 w-5" />
+            </a>
+          </div>
         </div>
 
         <div className="flex flex-1 flex-col">
-          {/* Utility strip — always solid, holds contact/trust info */}
-          <div className="border-b border-white/15 bg-brand-charcoal/80 text-brand-charcoal-foreground text-sm backdrop-blur-sm sm:text-base">
+          {/* Utility strip — holds contact/trust info. Hidden on mobile now
+              that the email link moved to an icon in the logo row; the
+              hours/insured items were already sm-only, so this strip had
+              nothing mobile-specific left to show. */}
+          <div className="hidden border-b border-white/15 bg-brand-charcoal/80 text-brand-charcoal-foreground text-sm backdrop-blur-sm sm:block sm:text-base">
             <div className="flex w-full items-center justify-between px-3 py-2 sm:px-6 sm:py-2.5 lg:px-10 lg:py-3">
               <a
                 href="mailto:help@kamalmighty.com"
@@ -87,7 +128,7 @@ export function Header() {
               dropdown panel underneath (see below). */}
           <div
             className={cx(
-              "flex flex-1 items-center px-4 py-5 transition-colors duration-300 sm:px-6 lg:px-10 lg:py-7",
+              "hidden flex-1 items-center px-4 py-5 transition-colors duration-300 sm:flex sm:px-6 lg:px-10 lg:py-7",
               scrolled || menuOpen ? "bg-brand-charcoal/95 backdrop-blur-sm" : "bg-transparent",
             )}
           >
@@ -104,18 +145,6 @@ export function Header() {
             </nav>
 
             <div className="ml-auto flex items-center gap-2.5 sm:gap-3">
-              {/* Icon-only call button on the smallest screens — a full
-                  text pill doesn't fit next to the logo + hamburger, and
-                  MobileCta's "Call Now" bar already covers this action
-                  below xl anyway. From sm up there's enough room for the
-                  full pill with the phone number spelled out. */}
-              <a
-                href="tel:+15648880755"
-                aria-label="Call (564) 888-0755"
-                className="flex h-11 w-11 flex-none items-center justify-center rounded-md bg-brand-yellow text-brand-charcoal shadow-md transition hover:brightness-95 sm:hidden"
-              >
-                <Phone className="h-5 w-5" />
-              </a>
               <a
                 href="tel:+15648880755"
                 className="hidden items-center gap-2 rounded-md bg-brand-yellow px-4 py-3 text-base font-black text-brand-charcoal shadow-md transition hover:brightness-95 sm:inline-flex"

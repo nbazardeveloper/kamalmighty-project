@@ -24,7 +24,7 @@ export function Hero() {
 
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Centered headline block */}
-        <div className="flex flex-1 flex-col items-center justify-center px-4 pt-40 pb-16 text-center sm:px-8 sm:pt-44 lg:px-16 lg:pt-52">
+        <div className="flex flex-1 flex-col items-center justify-center px-4 pt-44 pb-16 text-center sm:px-8 sm:pt-44 lg:px-16 lg:pt-52">
           <Reveal mode="mount" delay={0}>
             <div className="inline-flex items-center gap-3 border border-white/20 bg-white/5 px-4 py-2 backdrop-blur-sm">
               <div className="flex gap-0.5 text-brand-yellow">

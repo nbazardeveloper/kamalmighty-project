@@ -1,73 +1,41 @@
-import { MapPin } from "lucide-react";
+import { MapPin, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { SectionHeading } from "./SectionHeading";
 import { Heading } from "./Heading";
-
-// Hardcoded placeholder set — the live Supabase-backed project gallery
-// (see src/lib/projects.functions.ts) needs SUPABASE_URL/SUPABASE_PUBLISHABLE_KEY
-// configured as Cloudflare Worker secrets before it can run. Until that's set
-// up, show a fixed set of representative projects using existing site photos
-// instead of an empty/broken grid.
-const PLACEHOLDER_PROJECTS = [
-  {
-    id: "1",
-    title: "Full Kitchen Remodel",
-    category: "Remodeling & Renovation",
-    description:
-      "Complete kitchen overhaul with custom cabinetry, quartz counters, and a redesigned layout for better flow.",
-    image_url: "/images/whykamalmighty.webp",
-    location: "Vancouver, WA",
-  },
-  {
-    id: "2",
-    title: "Primary Bathroom Renovation",
-    category: "Remodeling & Renovation",
-    description: "Modern tile work, walk-in shower conversion, and updated fixtures throughout.",
-    image_url: "/images/hero.webp",
-    location: "Camas, WA",
-  },
-  {
-    id: "3",
-    title: "Backyard Deck & Patio Build",
-    category: "Exterior & Outdoor Structures",
-    description: "New composite deck with built-in seating and a covered patio extension.",
-    image_url: "/images/howitworkshero.webp",
-    location: "Portland, OR",
-  },
-  {
-    id: "4",
-    title: "Whole-Home Electrical Upgrade",
-    category: "MEP Services (Plumbing & Electrical)",
-    description: "Panel replacement, rewiring, and new fixtures across a single-family home.",
-    image_url: "/images/services-hero.webp",
-    location: "Battle Ground, WA",
-  },
-  {
-    id: "5",
-    title: "Exterior Repairs & Siding",
-    category: "Handyman & General Repairs",
-    description: "Siding repair, fresh trim, and general exterior touch-ups before resale.",
-    image_url: "/images/form-hero.webp",
-    location: "Beaverton, OR",
-  },
-  {
-    id: "6",
-    title: "Basement Finishing",
-    category: "Remodeling & Renovation",
-    description: "Unfinished basement converted into a livable space with a full bathroom.",
-    image_url: "/images/hero-reviews2.webp",
-    location: "Ridgefield, WA",
-  },
-];
+import { listProjectsPublic } from "@/lib/projects.functions";
 
 function ProjectsGrid() {
-  const projects = PLACEHOLDER_PROJECTS;
+  const listFn = useServerFn(listProjectsPublic);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["projects", "public"],
+    queryFn: () => listFn(),
+  });
+
+  const projects = data?.projects ?? [];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center gap-2 py-16 text-neutral-400">
+        <Loader2 className="h-5 w-5 animate-spin" /> Loading projects…
+      </div>
+    );
+  }
+
+  if (error || projects.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed border-white/15 py-16 text-center text-neutral-400">
+        No projects to show yet. Check back soon.
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((p) => (
         <article
           key={p.id}
-          className="group overflow-hidden rounded-xl border border-border bg-card transition hover:border-brand-yellow hover:shadow-xl"
+          className="group overflow-hidden rounded-xl border border-white/15 bg-brand-charcoal transition hover:border-brand-yellow hover:shadow-xl"
         >
           <div className="aspect-[4/3] overflow-hidden bg-secondary">
             <img
@@ -78,20 +46,20 @@ function ProjectsGrid() {
             />
           </div>
           <div className="p-5">
-            <div className="text-xs font-bold uppercase tracking-widest text-neutral-600">
+            <div className="text-xs font-bold uppercase tracking-widest text-neutral-400">
               {p.category}
             </div>
-            <Heading size="md" uppercase={false} className="mt-1">
+            <Heading size="md" tone="dark" uppercase={false} className="mt-1">
               {p.title}
             </Heading>
             {p.location && (
-              <div className="mt-2 flex items-center gap-1.5 text-base text-neutral-600">
+              <div className="mt-2 flex items-center gap-1.5 text-base text-neutral-300">
                 <MapPin className="h-3.5 w-3.5 text-brand-yellow" />
                 {p.location}
               </div>
             )}
             {p.description && (
-              <p className="mt-3 text-lg text-neutral-700 line-clamp-3">{p.description}</p>
+              <p className="mt-3 text-lg text-neutral-300 line-clamp-3">{p.description}</p>
             )}
           </div>
         </article>
@@ -102,9 +70,13 @@ function ProjectsGrid() {
 
 export function Projects() {
   return (
-    <section id="projects" className="bg-background py-24">
+    <section id="projects" className="bg-brand-charcoal py-24">
       <div className="w-full px-4 sm:px-8 lg:px-16">
-        <SectionHeading eyebrow="completed work." title="Recent Projects Across WA & OR" />
+        <SectionHeading
+          eyebrow="completed work."
+          title="Recent Projects Across WA & OR"
+          tone="dark"
+        />
         <ProjectsGrid />
       </div>
     </section>

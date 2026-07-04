@@ -39,7 +39,7 @@ const LOCAL_BUSINESS_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "GeneralContractor",
   name: "KAM ALMIGHTY PROPERTY SERVICES LLC",
-  image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200",
+  image: "https://kamalmighty.com/images/logo.webp",
   telephone: "+15648880755",
   email: "help@kamalmighty.com",
   priceRange: "$$",
@@ -142,14 +142,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       {
         property: "og:image",
-        content: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200",
+        content: "https://kamalmighty.com/images/logo.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: SITE_TITLE },
       { name: "twitter:description", content: SITE_DESCRIPTION },
       {
         name: "twitter:image",
-        content: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200",
+        content: "https://kamalmighty.com/images/logo.webp",
       },
     ],
     links: [

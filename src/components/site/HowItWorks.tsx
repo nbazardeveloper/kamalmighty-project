@@ -31,11 +31,11 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="process" className="w-full overflow-hidden bg-white py-24">
+    <section id="process" className="w-full overflow-hidden bg-brand-charcoal py-24">
       <div className="w-full px-4 sm:px-8 lg:px-16">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-0">
           {/* Left — wider image, no backing */}
-          <div className="relative min-h-[440px] overflow-hidden border border-gray-200 lg:col-span-7 lg:min-h-[680px]">
+          <div className="relative min-h-[440px] overflow-hidden border border-white/15 lg:col-span-7 lg:min-h-[680px]">
             <img
               src="/images/howitworkshero.webp"
               alt="Finished remodel — living room"

@@ -34,6 +34,8 @@ export async function sendResendEmail(lead: LeadNotification): Promise<void> {
     });
     if (!res.ok) {
       console.error("[notifications] Resend failed", res.status, await res.text());
+    } else {
+      console.log("[notifications] Resend email sent to", TO_EMAIL);
     }
   } catch (err) {
     console.error("[notifications] Resend error", err);

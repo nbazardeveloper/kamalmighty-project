@@ -25,19 +25,19 @@ const GUARANTEES = [
 
 export function Guarantees() {
   return (
-    <section className="w-full bg-white py-24">
+    <section className="w-full bg-brand-charcoal py-24">
       <div className="w-full px-4 sm:px-8 lg:px-16">
-        <SectionHeading eyebrow="our guarantees." title="What We Promise, We Deliver" />
+        <SectionHeading eyebrow="our guarantees." title="What We Promise, We Deliver" tone="dark" />
 
         <div className="grid gap-6 sm:grid-cols-3">
           {GUARANTEES.map(({ icon, title, description }, i) => (
             <Reveal key={title} delay={i * 100}>
-              <div className="h-full border border-gray-200 bg-white p-6 transition-colors duration-200 hover:border-black sm:p-8">
-                <img src={icon} alt="" className="h-14 w-14 brightness-0" />
-                <Heading size="lg" className="mt-5">
+              <div className="h-full border border-white/15 bg-brand-charcoal p-6 transition-colors duration-200 hover:border-brand-yellow sm:p-8">
+                <img src={icon} alt="" className="h-14 w-14" />
+                <Heading size="lg" tone="dark" className="mt-5">
                   {title}
                 </Heading>
-                <p className="mt-3 text-lg leading-relaxed text-neutral-700">{description}</p>
+                <p className="mt-3 text-lg leading-relaxed text-neutral-300">{description}</p>
               </div>
             </Reveal>
           ))}
