@@ -13,9 +13,16 @@ export function Hero() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden">
       <img
+        src="/images/heromobile.webp"
+        alt="KAM Almighty Property Services headquarters building"
+        className="animate-hero-zoom absolute inset-0 h-full w-full object-cover sm:hidden"
+        loading="eager"
+        fetchPriority="high"
+      />
+      <img
         src="/images/hero.webp"
         alt="KAM Almighty Property Services headquarters building"
-        className="animate-hero-zoom absolute inset-0 h-full w-full object-cover"
+        className="animate-hero-zoom absolute inset-0 hidden h-full w-full object-cover sm:block"
         loading="eager"
         fetchPriority="high"
       />
