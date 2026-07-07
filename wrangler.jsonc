@@ -19,5 +19,15 @@
   // client.ts, projects.functions.ts) reads process.env.SUPABASE_URL etc.,
   // so without this flag every server function silently falls back to
   // "no data" (e.g. the public Projects list on the homepage stays empty).
-  "compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"]
+  "compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"],
+  //
+  // THE actual bug: `npx wrangler deploy` treats this config file as the
+  // full source of truth for the Worker. Since this file declares no `vars`,
+  // every CI deploy was WIPING every "Variable" set manually in the
+  // dashboard (SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, VITE_*, ...).
+  // Confirmed directly in a Cloudflare build log: after deploy, "Your Worker
+  // has access to the following bindings: env.ASSETS Assets" — literally
+  // nothing else. `keep_vars: true` tells wrangler to leave
+  // dashboard-configured vars alone instead of clearing them on deploy.
+  "keep_vars": true
 }
