@@ -1,0 +1,13 @@
+{
+  // Merged into the auto-generated Worker config by the Nitro
+  // "cloudflare-module" preset at build time (see vite.config.ts).
+  //
+  // Without "nodejs_compat_populate_process_env", Cloudflare Workers does
+  // NOT copy dashboard "Variables and secrets" into Node's process.env even
+  // though "nodejs_compat" is enabled — it's only on by default for
+  // compatibility dates >= 2025-04-01. Our server code (client.server.ts,
+  // client.ts, projects.functions.ts) reads process.env.SUPABASE_URL etc.,
+  // so without this flag every server function silently falls back to
+  // "no data" (e.g. the public Projects list on the homepage stays empty).
+  "compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"]
+}
