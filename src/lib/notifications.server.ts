@@ -1,6 +1,7 @@
 // Server-only notification helpers. Blocked from client bundles by the
 // `.server.ts` suffix. All calls are best-effort — failures are logged and
 // swallowed so a downed provider never blocks a lead from being saved.
+import { getServerEnv } from "@/lib/server-env";
 
 export interface LeadNotification {
   name: string;
@@ -13,7 +14,7 @@ const FROM_EMAIL = "KAM Almighty <help@kamalmighty.com>";
 const TO_EMAIL = "help@kamalmighty.com";
 
 export async function sendResendEmail(lead: LeadNotification): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = getServerEnv("RESEND_API_KEY");
   if (!apiKey) {
     console.warn("[notifications] RESEND_API_KEY not configured — skipping email");
     return;
@@ -43,8 +44,8 @@ export async function sendResendEmail(lead: LeadNotification): Promise<void> {
 }
 
 export async function sendTelegramAlert(lead: LeadNotification): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const token = getServerEnv("TELEGRAM_BOT_TOKEN");
+  const chatId = getServerEnv("TELEGRAM_CHAT_ID");
   if (!token || !chatId) {
     console.warn("[notifications] Telegram not configured — skipping alert");
     return;

@@ -4,11 +4,12 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { resolveRealtimeTransport } from "@/integrations/supabase/realtime-transport";
 import type { Database } from "@/integrations/supabase/types";
 import { projectSchema, type ProjectInput } from "@/lib/validators";
+import { getServerEnv } from "@/lib/server-env";
 import { z } from "zod";
 
 export const listProjectsPublic = createServerFn({ method: "GET" }).handler(async () => {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+  const url = getServerEnv("SUPABASE_URL");
+  const key = getServerEnv("SUPABASE_PUBLISHABLE_KEY");
   if (!url || !key) return { projects: [] };
   const supabase = createClient<Database>(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },

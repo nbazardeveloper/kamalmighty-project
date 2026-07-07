@@ -4,13 +4,14 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { resolveRealtimeTransport } from "@/integrations/supabase/realtime-transport";
 import type { Database } from "@/integrations/supabase/types";
 import { leadSchema, type LeadInput } from "@/lib/validators";
+import { getServerEnv } from "@/lib/server-env";
 import { z } from "zod";
 
 export const submitLead = createServerFn({ method: "POST" })
   .inputValidator((data: LeadInput) => leadSchema.parse(data))
   .handler(async ({ data }) => {
-    const url = process.env.SUPABASE_URL;
-    const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+    const url = getServerEnv("SUPABASE_URL");
+    const key = getServerEnv("SUPABASE_PUBLISHABLE_KEY");
     if (!url || !key) throw new Error("Supabase env not configured");
 
     const supabase = createClient<Database>(url, key, {
