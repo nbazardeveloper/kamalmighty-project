@@ -2,6 +2,16 @@
   // Merged into the auto-generated Worker config by the Nitro
   // "cloudflare-module" preset at build time (see vite.config.ts).
   //
+  // "name" MUST match the Worker that's actually registered/bound to
+  // kamalmighty.com in the Cloudflare dashboard. Without it, Nitro
+  // auto-generates a name from the git remote + subpath on every build,
+  // which does NOT match "kamalmighty-project" — so `npx wrangler deploy`
+  // was silently creating/updating a different Worker every time, and the
+  // live site never received any of our builds. Confirmed by the
+  // "cloudflare-workers-and-pages[bot]" auto-PR that detected this same
+  // mismatch and tried to add the name back.
+  "name": "kamalmighty-project",
+  //
   // Without "nodejs_compat_populate_process_env", Cloudflare Workers does
   // NOT copy dashboard "Variables and secrets" into Node's process.env even
   // though "nodejs_compat" is enabled — it's only on by default for
