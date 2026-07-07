@@ -27,7 +27,24 @@
   // dashboard (SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, VITE_*, ...).
   // Confirmed directly in a Cloudflare build log: after deploy, "Your Worker
   // has access to the following bindings: env.ASSETS Assets" — literally
-  // nothing else. `keep_vars: true` tells wrangler to leave
-  // dashboard-configured vars alone instead of clearing them on deploy.
-  "keep_vars": true
+  // nothing else. `keep_vars: true` was supposed to stop that, but even with
+  // it set, a fresh CI deploy still shipped zero var bindings (verified
+  // again in a build log after this was added) — dashboard-added "Variable"
+  // entries apparently aren't tied to the version `wrangler deploy` builds
+  // from at all here. So: declare the values directly, which always wins
+  // because this file is the literal source of truth for every CI deploy.
+  //
+  // These two are Supabase's public anon/publishable key + project URL —
+  // meant to be exposed to browsers already (this app also ships them in
+  // the client bundle via VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY),
+  // so committing them here is not a secret leak. Do NOT add
+  // SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, or TELEGRAM_BOT_TOKEN here —
+  // those are real secrets and must be set with `wrangler secret put <NAME>`
+  // instead, which persists independently of what this file declares.
+  "keep_vars": true,
+  "vars": {
+    "SUPABASE_URL": "https://eoglrqhhqvbdriwcqpol.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_0u8J2cgXMEfDwM51aiIsVQ_qJ2XT5t-",
+    "SUPABASE_PROJECT_ID": "eoglrqhhqvbdriwcqpol"
+  }
 }
