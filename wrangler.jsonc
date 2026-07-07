@@ -9,5 +9,5 @@
   // client.ts, projects.functions.ts) reads process.env.SUPABASE_URL etc.,
   // so without this flag every server function silently falls back to
   // "no data" (e.g. the public Projects list on the homepage stays empty).
-  "compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"]
+  "compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"],"name": "kamalmighty-project"
 }
